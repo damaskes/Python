@@ -12,7 +12,6 @@ def make_diamond(steps):
     """
     Creates diamond brick in console
     """
-    columns = []
     arr = list(range(1, steps + 1)) + list(range(steps - 1, 0, -1))
     for i in arr:
         rows = []
@@ -22,9 +21,7 @@ def make_diamond(steps):
             if res < 1:
                 res = " "
             rows.append(res)
-        columns.append(rows)
-    for col in columns:
-        print(*col)
+        print(*rows)
 
 
 if __name__ == '__main__':
