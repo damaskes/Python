@@ -8,6 +8,7 @@ class Game(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title('Life')
+        self.resizable(False, False)
         self.canvas = tk.Canvas(self, width=300, height=300)
         self.canvas.pack()
         self.zone = random_array
