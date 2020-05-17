@@ -17,34 +17,34 @@ class Game(tk.Tk):
         for y in range(30):
             for x in range(30):
                 nb = 0
-                if x > 0 and y > 0 and self.zone[x - 1][y - 1] == 1:
+                if y > 0 and x > 0 and self.zone[y - 1][x - 1] == 1:
                     nb += 1
-                if x < 29 and y < 29 and self.zone[x + 1][y + 1] == 1:
+                if y < 29 and x < 29 and self.zone[y + 1][x + 1] == 1:
                     nb += 1
-                if x < 29 and y > 0 and self.zone[x + 1][y - 1] == 1:
+                if y < 29 and x > 0 and self.zone[y + 1][x - 1] == 1:
                     nb += 1
-                if x > 0 and y < 29 and self.zone[x - 1][y + 1] == 1:
+                if y > 0 and x < 29 and self.zone[y - 1][x + 1] == 1:
                     nb += 1
-                if x > 0 and self.zone[x - 1][y] == 1:
+                if y > 0 and self.zone[y - 1][x] == 1:
                     nb += 1
-                if x < 29 and self.zone[x + 1][y] == 1:
+                if y < 29 and self.zone[y + 1][x] == 1:
                     nb += 1
-                if y > 0 and self.zone[x][y - 1] == 1:
+                if x > 0 and self.zone[y][x - 1] == 1:
                     nb += 1
-                if y < 29 and self.zone[x][y + 1] == 1:
+                if x < 29 and self.zone[y][x + 1] == 1:
                     nb += 1
 
-                if self.zone[x][y] == 1:
+                if self.zone[y][x] == 1:
                     if 1 < nb < 4:
-                        self.canvas.create_rectangle(y * 10, x * 10, y * 10 + 10, x * 10 + 10, fill='green')
+                        self.canvas.create_rectangle(x * 10, y * 10, x * 10 + 10, y * 10 + 10, fill='green')
                     else:
-                        self.zone[x][y] = 0
+                        self.zone[y][x] = 0
                 else:
                     if nb == 3:
-                        self.zone[x][y] = 1
-                        self.canvas.create_rectangle(y * 10, x * 10, y * 10 + 10, x * 10 + 10, fill='green')
+                        self.zone[y][x] = 1
+                        self.canvas.create_rectangle(x * 10, y * 10, x * 10 + 10, y * 10 + 10, fill='green')
                     else:
-                        self.zone[x][y] = 0
+                        self.zone[y][x] = 0
         self.canvas.after(100, self.paint)
 
     def run(self):
