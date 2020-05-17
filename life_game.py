@@ -1,6 +1,8 @@
 import tkinter as tk
 from random import randint
 
+random_array = [[(1 if randint(0, 5) == 1 else 0) for _ in range(30)] for _ in range(30)]
+
 
 class Game(tk.Tk):
     def __init__(self):
@@ -8,43 +10,41 @@ class Game(tk.Tk):
         self.title('Life')
         self.canvas = tk.Canvas(self, width=300, height=300)
         self.canvas.pack()
-        self.zone = [[(1 if randint(0, 5) == 1 else 0) for _ in range(30)] for _ in range(30)]
+        self.zone = random_array
 
     def paint(self):
         self.canvas.delete(tk.ALL)
-        for i in range(30):
-            for j in range(30):
+        for y in range(30):
+            for x in range(30):
                 nb = 0
-                if i > 0 and self.zone[i - 1][j] == 1:
+                if x > 0 and y > 0 and self.zone[x - 1][y - 1] == 1:
                     nb += 1
-                if i < 29 and self.zone[i + 1][j] == 1:
+                if x < 29 and y < 29 and self.zone[x + 1][y + 1] == 1:
                     nb += 1
-                if j > 0 and self.zone[i][j - 1] == 1:
+                if x < 29 and y > 0 and self.zone[x + 1][y - 1] == 1:
                     nb += 1
-                if j < 29 and self.zone[i][j + 1] == 1:
+                if x > 0 and y < 29 and self.zone[x - 1][y + 1] == 1:
+                    nb += 1
+                if x > 0 and self.zone[x - 1][y] == 1:
+                    nb += 1
+                if x < 29 and self.zone[x + 1][y] == 1:
+                    nb += 1
+                if y > 0 and self.zone[x][y - 1] == 1:
+                    nb += 1
+                if y < 29 and self.zone[x][y + 1] == 1:
                     nb += 1
 
-                if i > 0 and j > 0 and self.zone[i - 1][j - 1] == 1:
-                    nb += 1
-                if i < 29 and j < 29 and self.zone[i + 1][j + 1] == 1:
-                    nb += 1
-                if i < 29 and j > 0 and self.zone[i + 1][j - 1] == 1:
-                    nb += 1
-                if i > 0 and j < 29 and self.zone[i - 1][j + 1] == 1:
-                    nb += 1
-
-                if self.zone[i][j] == 1:
+                if self.zone[x][y] == 1:
                     if 1 < nb < 4:
-                        self.zone[i][j] = 1
-                        self.canvas.create_rectangle(i * 10, j * 10, i * 10 + 10, j * 10 + 10, fill='green')
+                        self.canvas.create_rectangle(y * 10, x * 10, y * 10 + 10, x * 10 + 10, fill='green')
                     else:
-                        self.zone[i][j] = 0
+                        self.zone[x][y] = 0
                 else:
                     if nb == 3:
-                        self.zone[i][j] = 1
-                        self.canvas.create_rectangle(i * 10, j * 10, i * 10 + 10, j * 10 + 10, fill='green')
+                        self.zone[x][y] = 1
+                        self.canvas.create_rectangle(y * 10, x * 10, y * 10 + 10, x * 10 + 10, fill='green')
                     else:
-                        self.zone[i][j] = 0
+                        self.zone[x][y] = 0
         self.canvas.after(100, self.paint)
 
     def run(self):
