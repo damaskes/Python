@@ -9,6 +9,7 @@ def tick():
 
 
 root = tk.Tk()
+root.title('Clock')
 time_label = tk.Label(root, font=('times', 48, 'bold'), bg='#3C3F41', fg='#bbbbbb')
 time_label.pack()
 tick()
