@@ -48,6 +48,7 @@ class Scene:
         self.surface = pg.Surface(self.app.WINDOW_SIZE)
         self.sprites = pg.sprite.Group()
         self.pipe_sprites = pg.sprite.Group()
+        self.ground_sprites = pg.sprite.Group()
         self.pipe_tick = 0  # pipe re spawn timer
         self.is_hero_alive = True  # end of game switch
 
@@ -75,18 +76,18 @@ class Scene:
         bg2.set_pos(self.app.WINDOW_SIZE[0], bg2.rect.y)
         self.sprites.add(bg2)
 
-        ground1 = actors.MovableBg(ground_image, self, 2)
-        ground1.set_size((self.app.WINDOW_SIZE[0], ground1.size[1]))
+        ground1 = actors.MovableBg(ground_image, self, 3)
+        ground1.set_size((self.app.WINDOW_SIZE[0], int(ground1.size[1] / 4)))
         ground1.set_pos(0, self.app.WINDOW_SIZE[1] - ground1.size[1])
-        self.sprites.add(ground1)
-        ground2 = actors.MovableBg(ground_image, self, 2)
-        ground2.set_size((self.app.WINDOW_SIZE[0], ground2.size[1]))
-        ground2.set_pos(self.app.WINDOW_SIZE[0], self.app.WINDOW_SIZE[1] - ground1.size[1])
-        self.sprites.add(ground2)
+        self.ground_sprites.add(ground1)
+        ground2 = actors.MovableBg(ground_image, self, 3)
+        ground2.set_size((self.app.WINDOW_SIZE[0], int(ground2.size[1] / 4)))
+        ground2.set_pos(self.app.WINDOW_SIZE[0], self.app.WINDOW_SIZE[1] - ground2.size[1])
+        self.ground_sprites.add(ground2)
 
         self.hero = actors.Hero(hero_images, self)
         self.hero.set_pos(100, 300)
-        self.sprites.add(self.hero)
+        self.ground_sprites.add(self.hero)
 
     def restart(self):
         self.is_hero_alive = True
@@ -117,11 +118,13 @@ class Scene:
 
         self.sprites.update()
         self.pipe_sprites.update()
+        self.ground_sprites.update()
 
     def render(self):
         self.surface.fill(pg.Color('red'))
         self.sprites.draw(self.surface)
         self.pipe_sprites.draw(self.surface)
+        self.ground_sprites.draw(self.surface)
         if self.is_hero_alive:
             self.update()
         else:
