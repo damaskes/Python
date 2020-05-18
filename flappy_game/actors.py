@@ -105,4 +105,5 @@ class Hero(pg.sprite.Sprite):
             self.jump_sound.play()
             self.rect.y -= 20
             self._speed = 0
-        self.rect.y += self._speed
+        else:
+            self.rect.y += self._speed
