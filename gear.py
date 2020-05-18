@@ -9,10 +9,6 @@ SIDE = WIDTH / 4
 CENTER = (CANVAS_MID_X, CANVAS_MID_Y)
 OVAL_CORDS = [CANVAS_MID_X - 40, CANVAS_MID_Y - 40, CANVAS_MID_X + 40, CANVAS_MID_Y + 40]
 
-root = tk.Tk()
-canvas = tk.Canvas(root, bg="black", height=HEIGHT, width=WIDTH)
-canvas.pack()
-
 vertices = [
     [CANVAS_MID_X - SIDE / 2, CANVAS_MID_Y - SIDE / 2],
     [CANVAS_MID_X + SIDE / 2, CANVAS_MID_Y - SIDE / 2],
@@ -36,6 +32,9 @@ def rotate(points, angle, center_):
     return new_points
 
 
+root = tk.Tk()
+canvas = tk.Canvas(root, bg="black", height=HEIGHT, width=WIDTH)
+canvas.pack()
 for e in range(0, 90, 30):
     canvas.create_polygon(rotate(vertices, e, CENTER), fill='#3C3F41')
 
