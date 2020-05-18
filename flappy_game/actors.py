@@ -42,9 +42,10 @@ class Pipe(SimpleActor):
     def update(self, *args):
 
         # movement
-        self.rect.x -= self.speed
         if self.rect.x < - self.size[0]:
-            self.remove()
+            self.kill()
+        else:
+            self.rect.x -= self.speed
 
 
 class Button(SimpleActor):
