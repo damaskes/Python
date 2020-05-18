@@ -13,6 +13,7 @@ class App:
         self.WINDOW_SIZE = (350, 550)
         self.FPS = 30
         self.window = pg.display.set_mode(self.WINDOW_SIZE)
+        pg.display.set_caption('Flappy Bird')
         self.clock = pg.time.Clock()
         pg.mixer.music.load(os.path.join('assets', 'music.mp3'))
 
