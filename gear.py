@@ -16,7 +16,7 @@ VERTICES = [
 ]
 
 
-def rotate(points, angle, center_):
+def rotate_vertices(points, angle, center_):
     angle = math.radians(angle)
     cos_val = math.cos(angle)
     sin_val = math.sin(angle)
@@ -36,7 +36,7 @@ root.title('MGS Lite Version')
 canvas = tk.Canvas(root, bg="black", height=HEIGHT, width=WIDTH)
 canvas.pack()
 for e in range(0, 90, 30):
-    canvas.create_polygon(rotate(VERTICES, e, CENTER), fill='#3C3F41')
+    canvas.create_polygon(rotate_vertices(VERTICES, e, CENTER), fill='#3C3F41')
 canvas.create_oval(OVAL_CORDS[0], OVAL_CORDS[1], OVAL_CORDS[2], OVAL_CORDS[3], fill='black')
 
 
