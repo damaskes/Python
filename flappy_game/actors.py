@@ -68,7 +68,6 @@ class Hero(pg.sprite.Sprite):
         self.image = self.images[self.frame_id]
         self.rect = self.image.get_rect()
         self._speed = 0
-        self.velocity = 0
         self.gravity = 0.5
         self.jump_sound = pg.mixer.Sound(os.path.join('assets', 'sfx_wing.ogg'))
 
@@ -101,12 +100,9 @@ class Hero(pg.sprite.Sprite):
             self.image = self.images[self.frame_id]
 
         # movement
+        self._speed += self.gravity
         if self.scene.app.jumped:
             self.jump_sound.play()
-            self.velocity = 20
-        self._speed += self.gravity
-        if self.velocity != 0:
-            self.rect.y -= self.velocity
+            self.rect.y -= 20
             self._speed = 0
-            self.velocity = 0
         self.rect.y += self._speed
