@@ -44,6 +44,7 @@ class Game(tk.Tk):
                     if nb == 3:
                         self.zone[y][x] = 1
                         self.canvas.create_rectangle(x * 10, y * 10, x * 10 + 10, y * 10 + 10, fill='green')
+
         self.canvas.after(100, self.paint)
 
     def run(self):
