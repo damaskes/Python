@@ -32,10 +32,13 @@ def rotate(points, angle, center_):
 
 
 root = tk.Tk()
+root.title('MGS Lite Version')
 canvas = tk.Canvas(root, bg="black", height=HEIGHT, width=WIDTH)
 canvas.pack()
 for e in range(0, 90, 30):
     canvas.create_polygon(rotate(VERTICES, e, CENTER), fill='#3C3F41')
 canvas.create_oval(OVAL_CORDS[0], OVAL_CORDS[1], OVAL_CORDS[2], OVAL_CORDS[3], fill='black')
 
-root.mainloop()
+
+if __name__ == '__main__':
+    root.mainloop()
