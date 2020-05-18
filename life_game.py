@@ -7,7 +7,7 @@ random_array = [[(1 if randint(0, 5) == 1 else 0) for _ in range(30)] for _ in r
 class Game(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title('Life')
+        self.title('Game Of Life')
         self.resizable(False, False)
         self.canvas = tk.Canvas(self, width=300, height=300)
         self.canvas.pack()
@@ -44,8 +44,6 @@ class Game(tk.Tk):
                     if nb == 3:
                         self.zone[y][x] = 1
                         self.canvas.create_rectangle(x * 10, y * 10, x * 10 + 10, y * 10 + 10, fill='green')
-                    else:
-                        self.zone[y][x] = 0
         self.canvas.after(100, self.paint)
 
     def run(self):
