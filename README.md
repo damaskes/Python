@@ -1,5 +1,5 @@
-# python
-Simple scripts on python  
+# Python
+Simple scripts on Python  
 
 `clock.py` simple clock on tkinter  
 `gear.py` Metal Gear Solid  
