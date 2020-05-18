@@ -94,9 +94,10 @@ class Hero(pg.sprite.Sprite):
         self.tick += 1
         if self.tick == 2:
             self.tick = 0
-            self.frame_id += 1
-            if self.frame_id == len(self.images):
+            if self.frame_id == 3:
                 self.frame_id = 0
+            else:
+                self.frame_id += 1
             self.image = self.images[self.frame_id]
 
         # movement
