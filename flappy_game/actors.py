@@ -100,10 +100,10 @@ class Hero(pg.sprite.Sprite):
             self.image = self.images[self.frame_id]
 
         # movement
-        self._speed += self.gravity
         if self.scene.app.jumped:
             self.jump_sound.play()
             self.rect.y -= 20
             self._speed = 0
         else:
+            self._speed += self.gravity
             self.rect.y += self._speed
