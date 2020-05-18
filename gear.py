@@ -8,8 +8,7 @@ CANVAS_MID_Y = HEIGHT / 2
 SIDE = WIDTH / 4
 CENTER = (CANVAS_MID_X, CANVAS_MID_Y)
 OVAL_CORDS = [CANVAS_MID_X - 40, CANVAS_MID_Y - 40, CANVAS_MID_X + 40, CANVAS_MID_Y + 40]
-
-vertices = [
+VERTICES = [
     [CANVAS_MID_X - SIDE / 2, CANVAS_MID_Y - SIDE / 2],
     [CANVAS_MID_X + SIDE / 2, CANVAS_MID_Y - SIDE / 2],
     [CANVAS_MID_X + SIDE / 2, CANVAS_MID_Y + SIDE / 2],
@@ -36,7 +35,7 @@ root = tk.Tk()
 canvas = tk.Canvas(root, bg="black", height=HEIGHT, width=WIDTH)
 canvas.pack()
 for e in range(0, 90, 30):
-    canvas.create_polygon(rotate(vertices, e, CENTER), fill='#3C3F41')
+    canvas.create_polygon(rotate(VERTICES, e, CENTER), fill='#3C3F41')
 canvas.create_oval(OVAL_CORDS[0], OVAL_CORDS[1], OVAL_CORDS[2], OVAL_CORDS[3], fill='black')
 
 root.mainloop()
