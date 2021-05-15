@@ -8,10 +8,11 @@ def wait_for_input():
         return steps
 
 
-def make_diamond(steps):
+def make_diamond():
     """
     Creates diamond brick in console
     """
+    steps = wait_for_input()
     arr = list(range(1, steps + 1)) + list(range(steps - 1, 0, -1))
     for i in arr:
         rows = []
@@ -25,5 +26,5 @@ def make_diamond(steps):
 
 
 if __name__ == '__main__':
-    make_diamond(wait_for_input())
+    make_diamond()
 
