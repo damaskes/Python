@@ -11,7 +11,6 @@ Type something into the large input field, this will be the body text of your pa
 To add buttons to the page, use the form on the bottom of the window. If you specify a link to an existing page next to the "Add new button" button, the button will lead to it, otherwise a new page will be created and the button will lead to it. If you click on the created button, you will be taken to the page to which this button links. You can go to any page of the quest by clicking on its number in the list above.<br/><br/>
 Click on the "SAVE PROJECT TO FILE" button to save all data to a file. You can save to a file right before finishing work. Until then, all intermediate changes will be stored in the program's memory until you save or close the program.<br/><br/>
 Author wishes you successes in your work! Let's do some nice content!
----
 ![](1.png)
 ![](2.png)
 ![](3.png)
