@@ -1,7 +1,7 @@
 # Python
 Simple scripts on Python  
 
-`tg_bots` Text quest bot for Telegram and utility for quest creation
+`tg_bots/` Text quest bot for Telegram and utility for quest creation
 `flappy_game/` simple [Flappy Bird](https://en.wikipedia.org/wiki/Flappy_Bird) on pygame   
 `pray_for_jesus/` Jesus test game on pygame   
 `clock.py` simple clock on tkinter  
