@@ -1,0 +1,6 @@
+PAGE_ID = 'page_id'
+QUEST_TEXT = 'quest_text'
+BUTTONS = 'buttons'
+BUTTON_ID = 'id'
+BUTTON_TEXT = 'text'
+LINKS_FROM = 'links_from'
