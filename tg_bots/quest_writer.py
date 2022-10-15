@@ -14,6 +14,7 @@ def from_list_to_string(list_):
 
 
 DATA_FILE_NAME = 'data.json'
+EMPTY_PAGE = {terms.PAGE_ID: None, terms.QUEST_TEXT: "", terms.BUTTONS: [], terms.LINKS_FROM: []}
 
 
 class App:
@@ -22,7 +23,7 @@ class App:
         self.root.title('Text Quest Creator')
         self.root.geometry('800x700')
 
-        self.text_area = tk.Text(self.root, width=95, height=20)
+        self.text_area = tk.Text(self.root, width=95, height=20, wrap=tk.WORD)
         self.pages = []
 
         # loading file if exists, creating new if not
@@ -45,7 +46,7 @@ class App:
         tk.Label(self.root, text='Choose the page: ').place(x=10, y=13)
 
         self.om1 = tk.OptionMenu(self.root, self.menu_var, *self.pages, command=self.select_id_from_option_menu)
-        self.om1.place(x=130, y=10)
+        self.om1.place(x=110, y=10)
 
         self.page_id_var = tk.StringVar()
         self.set_page_id_string_var()
@@ -72,7 +73,9 @@ class App:
         tk.Label(self.root, text='Added buttons (click on button to go to the page it links):').place(x=10, y=500)
 
         tk.Button(self.root, text='Run test', command=lambda: RunTestPopup(self, 'Testing Game', 600, 600)).\
-            place(x=650, y=40)
+            place(x=650, y=10)
+        tk.Button(self.root, text='Show problems',
+                  command=lambda: ShowProblemPagesPopup(self, 'Pages with problems', 400, 200)).place(x=650, y=40)
         tk.Button(self.root, text='SAVE PROJECT TO FILE', command=self.write_to_file).place(x=650, y=70)
         # endregion
 
@@ -145,7 +148,7 @@ class App:
 
     # temporarily saving data
     def save_to_data(self):
-        self.current_data[terms.QUEST_TEXT] = self.text_area.get(1.0, tk.END)
+        self.current_data[terms.QUEST_TEXT] = self.text_area.get(1.0, tk.END).strip()
         self.data[self.id] = self.current_data
 
     # refreshing all
@@ -236,6 +239,51 @@ class BasePopup(tk.Toplevel):
         self.title(title)
 
 
+class ShowProblemPagesPopup(BasePopup):
+    def __init__(self, app, title, w, h):
+        super().__init__(app, title, w, h)
+        tk.Label(self, text='Choose page from lists to open in editor').place(x=10, y=10)
+        empty_links = []
+        empty_text = []
+        empty_buttons = []
+        for page in self.app.data:
+            if not page.get(terms.LINKS_FROM):
+                empty_links.append(str(page.get(terms.PAGE_ID)))
+            elif page.get(terms.QUEST_TEXT).strip() == '':
+                empty_text.append(str(page.get(terms.PAGE_ID)))
+            elif not page.get(terms.BUTTONS):
+                empty_buttons.append(str(page.get(terms.PAGE_ID)))
+        self.empty_links_var = tk.StringVar()
+        self.empty_text_var = tk.StringVar()
+        self.empty_buttons_var = tk.StringVar()
+        tk.Label(self, text='Pages without back links {}: '.format(len(empty_links))).place(x=10, y=40)
+        tk.Label(self, text='Pages without body text {}: '.format(len(empty_text))).place(x=10, y=80)
+        tk.Label(self, text='Pages without buttons: {}'.format(len(empty_buttons))).place(x=10, y=120)
+        c1 = Combobox(self, textvariable=self.empty_links_var, values=empty_links)
+        c1.place(x=180, y=37)
+        c2 = Combobox(self, textvariable=self.empty_text_var, values=empty_text)
+        c2.place(x=180, y=77)
+        c3 = Combobox(self, textvariable=self.empty_buttons_var, values=empty_buttons)
+        c3.place(x=180, y=117)
+        c1.bind("<<ComboboxSelected>>", self.link_problem)
+        c2.bind("<<ComboboxSelected>>", self.text_problem)
+        c3.bind("<<ComboboxSelected>>", self.button_problem)
+
+    def go_to_page(self, page_id):
+        self.app.id = int(page_id)
+        self.app.renew()
+        self.destroy()
+
+    def button_problem(self, event):
+        self.go_to_page((self.empty_buttons_var.get()))
+
+    def text_problem(self, event):
+        self.go_to_page(self.empty_text_var.get())
+
+    def link_problem(self, event):
+        self.go_to_page(self.empty_links_var.get())
+
+
 class RunTestPopup(BasePopup):
     def __init__(self, app, title, w, h):
         super().__init__(app, title, w, h)
@@ -251,7 +299,8 @@ class RunTestPopup(BasePopup):
         tk.Button(combo_frame, text='Load page',
                   command=lambda: self.renew(self.pape_id_var.get())).pack(side=tk.RIGHT)
 
-        tk.Label(self, textvariable=self.text_var,  relief=tk.GROOVE, justify=tk.LEFT).pack(padx=10, pady=10)
+        tk.Label(self, textvariable=self.text_var,  relief=tk.GROOVE, justify=tk.LEFT,
+                 wraplength=500).pack(padx=10, pady=10)
         self.buttons = []
         self.renew()
 
@@ -262,7 +311,7 @@ class RunTestPopup(BasePopup):
         if page_id is not None:
             page_id = int(page_id)
             if page_id >= len(self.data):
-                messagebox.showerror('An error has occurred', 'Inserted PAGE_ID dos not exists!')
+                messagebox.showerror('An error has occurred', 'PAGE_ID dos not exists!')
             else:
                 self.current_data = self.get_current_data(page_id)
         page_text = self.current_data.get(terms.QUEST_TEXT).strip()
