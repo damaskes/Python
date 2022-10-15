@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from tkinter.ttk import Combobox
 import json
 
 import terms
@@ -15,14 +16,13 @@ def from_list_to_string(list_):
 DATA_FILE_NAME = 'data.json'
 
 
-class QuestWriter:
+class App:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title('Text Quest Creator')
         self.root.geometry('800x700')
 
         self.text_area = tk.Text(self.root, width=95, height=20)
-        self.text_area.bind("<Key>", lambda e: self.ctrl_event(e))
         self.pages = []
 
         # loading file if exists, creating new if not
@@ -71,25 +71,14 @@ class QuestWriter:
 
         tk.Label(self.root, text='Added buttons (click on button to go to the page it links):').place(x=10, y=500)
 
+        tk.Button(self.root, text='Run test', command=lambda: RunTestPopup(self, 'Testing Game', 600, 600)).\
+            place(x=650, y=40)
         tk.Button(self.root, text='SAVE PROJECT TO FILE', command=self.write_to_file).place(x=650, y=70)
         # endregion
 
         self.buttons = []
         self.del_buttons = []
         self.show_created_buttons()
-
-    # adding copy/paste event by <CTRL+C>/<CTRL+V> to text area
-    def ctrl_event(self, event):
-        if event.state == 4 and event.keysym == 'c':
-            content = self.text_area.selection_get()
-            self.root.clipboard_clear()
-            self.root.clipboard_append(content)
-            return "break"
-        elif event.state == 4 and event.keysym == 'v':
-            self.text_area.insert('end', self.root.selection_get(selection='CLIPBOARD'))
-            return "break"
-        else:
-            pass
 
     # starting new game
     def make_new_game(self):
@@ -237,14 +226,61 @@ class QuestWriter:
         self.root.mainloop()
 
 
-class ChangeButtonPopup(tk.Toplevel):
-    def __init__(self, app, title, w, h, button_index):
+class BasePopup(tk.Toplevel):
+    def __init__(self, app, title, w, h):
         super().__init__(app.root)
         self.app = app
         self.geometry('{}x{}'.format(w, h))
         self.grab_set()
         self.focus_force()
         self.title(title)
+
+
+class RunTestPopup(BasePopup):
+    def __init__(self, app, title, w, h):
+        super().__init__(app, title, w, h)
+        self.data = self.app.data
+        self.current_data = self.get_current_data(0)
+        self.text_var = tk.StringVar()
+        pages = [str(e) for e in range(0, len(self.data))]
+        self.pape_id_var = tk.StringVar()
+        self.pape_id_var.set(pages[0])
+        combo_frame = tk.Frame(self)
+        combo_frame.pack(pady=10)
+        Combobox(combo_frame, textvariable=self.pape_id_var, values=pages).pack(side=tk.LEFT)
+        tk.Button(combo_frame, text='Load page',
+                  command=lambda: self.renew(self.pape_id_var.get())).pack(side=tk.RIGHT)
+
+        tk.Label(self, textvariable=self.text_var,  relief=tk.GROOVE, justify=tk.LEFT).pack(padx=10, pady=10)
+        self.buttons = []
+        self.renew()
+
+    def get_current_data(self, page_id):
+        return self.data[int(page_id)]
+
+    def renew(self, page_id=None):
+        if page_id is not None:
+            page_id = int(page_id)
+            if page_id >= len(self.data):
+                messagebox.showerror('An error has occurred', 'Inserted PAGE_ID dos not exists!')
+            else:
+                self.current_data = self.get_current_data(page_id)
+        page_text = self.current_data.get(terms.QUEST_TEXT).strip()
+        page_text = 'Page is empty, please fill it in Creator' if page_text == '' else page_text
+        self.text_var.set(page_text)
+        for btn in self.buttons:
+            btn.destroy()
+        self.buttons.clear()
+        for button in self.current_data.get(terms.BUTTONS):
+            b = tk.Button(self, text=button.get(terms.BUTTON_TEXT),
+                          command=lambda b_=button: self.renew(b_.get(terms.BUTTON_ID)))
+            self.buttons.append(b)
+            b.pack()
+
+
+class ChangeButtonPopup(BasePopup):
+    def __init__(self, app, title, w, h, button_index):
+        super().__init__(app, title, w, h)
         self.button_index = button_index
         self.button = self.app.current_data.get(terms.BUTTONS)[self.button_index]
         self.entry_var = tk.StringVar()
@@ -280,4 +316,4 @@ class ChangeButtonPopup(tk.Toplevel):
 
 
 if __name__ == '__main__':
-    QuestWriter().run()
+    App().run()
