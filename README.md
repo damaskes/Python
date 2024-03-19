@@ -7,5 +7,5 @@ Simple scripts on Python
 `clock.py` Simple clock on Tkinter  
 `gear.py` Metal Gear Solid :sunglasses:  
 `life_game.py` [Game Of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) on Tkinter  
-`snake_game.py` Full version of Snake Game on Tkinter
+`snake_game.py` Full version of Snake Game on Tkinter  
 `terminal_diamond.py` Creates diamond brick in console  
